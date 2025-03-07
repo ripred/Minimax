@@ -1,0 +1,28 @@
+########################################################
+# Syntax Coloring Map for Arduino Minimax Library      #
+#                                                      #
+# https://github.com/ripred/Minimax                    #
+########################################################
+
+########################################################
+# Datatypes (KEYWORD1)
+########################################################
+Minimax	KEYWORD1
+
+########################################################
+# Methods, Functions, and Globals (KEYWORD2)
+########################################################
+GameLogic	KEYWORD2
+findBestMove	KEYWORD2
+getBestScore	KEYWORD2
+getNodesSearched	KEYWORD2
+evaluate	KEYWORD2
+generateMoves	KEYWORD2
+applyMove	KEYWORD2
+isTerminal	KEYWORD2
+isMaximizingPlayer	KEYWORD2
+
+########################################################
+# Constants (LITERAL1)
+########################################################
+
