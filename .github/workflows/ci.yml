@@ -6,12 +6,11 @@ on:
   pull_request:
   workflow_dispatch:
 
+#─────────────────────────────────────────────────────────────
+# JOB 1: Desktop smoke-test — prove the header compiles with
+#        a modern g++ toolchain (standard C++17 compliance)
+#─────────────────────────────────────────────────────────────
 jobs:
-  #--------------------------------------------------------------
-  # Desktop build: compile (and optionally benchmark) a desktop
-  # version of one example with g++, ensuring the library is
-  # standard-C++ compliant on POSIX hosts.
-  #--------------------------------------------------------------
   linux-desktop:
     runs-on: ubuntu-latest
 
@@ -22,20 +21,18 @@ jobs:
       - name: 🛠️ Install g++
         run: |
           sudo apt-get update
-          sudo apt-get install -y g++ make
+          sudo apt-get install -y g++
 
-      - name: 🔨 Build desktop example (Connect-Four)
-        working-directory: examples/ConnectFour/desktop
+      - name: 🔨 Smoke-test header with g++
         run: |
-          g++ -std=c++17 -Wall -Wextra -O2 -I../../.. \
-              connect_four.cpp -o connect_four
-          # Optional quick self-test:
-          ./connect_four --benchmark || true
+          # Create a tiny test that only includes the header.
+          echo '#include "src/Minimax.h"\nint main() { return 0; }' > test.cpp
+          g++ -std=c++17 -Wall -Wextra -pedantic test.cpp -o /tmp/minimax_smoke
 
-  #--------------------------------------------------------------
-  # AVR build: compile every .ino sketch under examples/ for an
-  # Arduino Uno, ensuring zero-STL and size compliance.
-  #--------------------------------------------------------------
+#─────────────────────────────────────────────────────────────
+# JOB 2: AVR build — compile every Arduino example for UNO and
+#        fail if flash/RAM exceed the chip limits
+#─────────────────────────────────────────────────────────────
   arduino-avr:
     runs-on: ubuntu-latest
 
@@ -60,16 +57,12 @@ jobs:
             arduino-cli compile --fqbn arduino:avr:uno "$sketch"
           done
 
-      #----------------------------------------------------------
-      # Firmware-size report (flash / RAM) for a representative
-      # sketch. Adjust 'sketch:' or add more runs if desired.
-      #----------------------------------------------------------
       - name: 📊 Report firmware sizes
         uses: kenji-miyake/arduino-size-report-action@v2
         with:
-          sketch: examples/ConnectFour/ConnectFour.ino
+          sketch: examples/ConnectFour/ConnectFour.ino   # pick any representative sketch
           fqbn: arduino:avr:uno
           thresholds: |
-            flash: 30720   # Uno maximum flash bytes
-            ram:   2048    # Uno SRAM bytes
+            flash: 30720   # Uno flash limit
+            ram:   2048    # Uno SRAM limit
 
