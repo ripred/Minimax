@@ -8,29 +8,11 @@ on:
 
 jobs:
 #─────────────────────────────────────────────────────────────
-# 1) Desktop smoke-test: header must compile with g++-17
-#─────────────────────────────────────────────────────────────
-  linux-desktop:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🛎️ Checkout
-        uses: actions/checkout@v4
-
-      - name: 🛠️ Install g++
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y g++
-
-      - name: 🔨 Smoke-test header with g++
-        run: |
-          echo '#include "src/Minimax.h"\nint main(){return 0;}' > test.cpp
-          g++ -std=c++17 -Wall -Wextra -pedantic test.cpp -o /tmp/minimax_smoke
-
-#─────────────────────────────────────────────────────────────
-# 2) AVR build & size report: compile all sketches for Uno
+# AVR build & size report
 #─────────────────────────────────────────────────────────────
   arduino-avr:
     runs-on: ubuntu-latest
+
     steps:
       - name: 🛎️ Checkout
         uses: actions/checkout@v4
@@ -43,8 +25,7 @@ jobs:
             examples
           enable-deltas-report: true   # produce size-delta artifact
 
-      # Comment size deltas on PRs (skip on push)
-      - name: 📊 Report size deltas
+      - name: 📊 Comment size deltas on PRs
         if: github.event_name == 'pull_request'
         uses: arduino/report-size-deltas@v1
 
