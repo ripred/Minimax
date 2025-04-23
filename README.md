@@ -5,7 +5,7 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![CI](https://img.shields.io/github/actions/workflow/status/ripred/Minimax/ci.yml?label=build)
 
-A **single-header, STL-free** implementation of the classic **Minimax search with α–β pruning**, designed for 2 KB microcontrollers yet flexible enough for desktop use.
+A **single-header, STL-free** implementation of classic **Minimax search with α–β pruning**, crafted for 2 KB microcontrollers yet flexible enough for desktop use.
 
 * **Tiny footprint** – ≈ 5 KB flash  
 * **Zero dynamic allocation** – no `new`, no STL containers  
@@ -18,7 +18,7 @@ A **single-header, STL-free** implementation of the classic **Minimax search wit
 ## 1 • Why Another Minimax?
 
 Most hobby libraries assume megabytes of RAM and `std::vector`.  
-This header was born when squeezing an AI into an **ATmega328** (2 KB RAM).
+This header was born while squeezing an AI into an **ATmega328** (2 KB RAM).
 
 ---
 
@@ -74,7 +74,7 @@ Restart the IDE to auto-discover the library.
     }
     
 
-Compile with `-std=gnu++17` (earlier standards work if your toolchain lacks C++17).
+Compile with `-std=gnu++17` (earlier standards also work if your toolchain lacks C++17).
 
 ---
 
@@ -83,8 +83,8 @@ Compile with `-std=gnu++17` (earlier standards work if your toolchain lacks C++1
 | Method | Purpose |
 |--------|---------|
 | `Move findBestMove(const GameState& s)` | Run α–β search up to `MaxDepth`, returning the best move |
-| `int  getBestScore() const` | Score from the last search |
-| `int  getNodesSearched() const` | Positions evaluated (profiling) |
+| `int getBestScore() const` | Score from the last search |
+| `int getNodesSearched() const` | Positions evaluated (profiling) |
 
 ### Game Logic Interface
 
@@ -104,7 +104,7 @@ Implement these in a subclass of `Minimax<GameState, Move>::GameLogic`:
 |--------|---------|-------|
 | Checkers | ~1.7 KB | 8×8 American with kinging & jumps |
 | Connect-Four | ~1.4 KB | 7×6 board, depth-4 search fits on AVR |
-| Gomoku | ~1.6 KB | 15×15 “Five in a Row” |
+| Gomoku | ~1.6 KB | 15×15 “Five-in-a-Row” |
 | Othello | ~1.8 KB | 8×8 reversible-disc game |
 
 Open **File → Examples → Minimax → *(game)*** after installing, or compile on desktop to profile deeper depths.
@@ -119,7 +119,7 @@ Open **File → Examples → Minimax → *(game)*** after installing, or compile
 | `MaxDepth` | Search depth | Flash & time exponential |
 | Heuristic | Score range | Consider `int16_t` on 8-bit MCUs |
 
-Disable `Serial` prints to save ~2 KB flash in examples.
+Disable `Serial` prints in examples to save ~2 KB flash.
 
 ---
 
@@ -145,4 +145,4 @@ Bug reports and new example ports are **very** welcome!
 
 Released under the MIT License – see [LICENSE](LICENSE).
 
-> *Built with ❤ in Texas by **Trent M. Wyatt** – “Boards are small, but ambition is infinite.”*
+<sup>© 2025 by <strong>Trent M. Wyatt</strong></sup>
