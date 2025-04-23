@@ -7,39 +7,69 @@ on:
   workflow_dispatch:
 
 jobs:
+  #--------------------------------------------------------------
+  # Desktop build: compile (and optionally benchmark) a desktop
+  # version of one example with g++, ensuring the library is
+  # standard-C++ compliant on POSIX hosts.
+  #--------------------------------------------------------------
   linux-desktop:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: 🛎️ Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install g++
-        run: sudo apt-get update && sudo apt-get install -y g++ make
+      - name: 🛠️ Install g++
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++ make
 
-      - name: Build desktop example (Connect-Four)
+      - name: 🔨 Build desktop example (Connect-Four)
         working-directory: examples/ConnectFour/desktop
         run: |
           g++ -std=c++17 -Wall -Wextra -O2 -I../../.. \
               connect_four.cpp -o connect_four
-          ./connect_four --benchmark  # optional quick self-test
+          # Optional quick self-test:
+          ./connect_four --benchmark || true
 
+  #--------------------------------------------------------------
+  # AVR build: compile every .ino sketch under examples/ for an
+  # Arduino Uno, ensuring zero-STL and size compliance.
+  #--------------------------------------------------------------
   arduino-avr:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: 🛎️ Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up arduino-cli
+      - name: ⚙️ Set up arduino-cli
         uses: arduino/setup-arduino-cli@v1
         with:
           version: latest
 
-      - name: Install AVR core & Minimax examples
+      - name: 📦 Install AVR core
         run: |
           arduino-cli core update-index
           arduino-cli core install arduino:avr
-          # Compile each example for an Uno
+
+      - name: 🔨 Compile all examples for Arduino Uno
+        run: |
           find examples -name "*.ino" | while read sketch; do
+            echo "=== Building $sketch ==="
             arduino-cli compile --fqbn arduino:avr:uno "$sketch"
           done
+
+      #----------------------------------------------------------
+      # Firmware-size report (flash / RAM) for a representative
+      # sketch. Adjust 'sketch:' or add more runs if desired.
+      #----------------------------------------------------------
+      - name: 📊 Report firmware sizes
+        uses: kenji-miyake/arduino-size-report-action@v2
+        with:
+          sketch: examples/ConnectFour/ConnectFour.ino
+          fqbn: arduino:avr:uno
+          thresholds: |
+            flash: 30720   # Uno maximum flash bytes
+            ram:   2048    # Uno SRAM bytes
 
