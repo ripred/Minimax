@@ -6,16 +6,14 @@ on:
   pull_request:
   workflow_dispatch:
 
-#─────────────────────────────────────────────────────────────
-# JOB 1: Desktop smoke-test — prove the header compiles with
-#        a modern g++ toolchain (standard C++17 compliance)
-#─────────────────────────────────────────────────────────────
 jobs:
+#─────────────────────────────────────────────────────────────
+# 1) Desktop smoke-test: header must compile with g++-17
+#─────────────────────────────────────────────────────────────
   linux-desktop:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 🛎️ Checkout repository
+      - name: 🛎️ Checkout
         uses: actions/checkout@v4
 
       - name: 🛠️ Install g++
@@ -25,44 +23,28 @@ jobs:
 
       - name: 🔨 Smoke-test header with g++
         run: |
-          # Create a tiny test that only includes the header.
-          echo '#include "src/Minimax.h"\nint main() { return 0; }' > test.cpp
+          echo '#include "src/Minimax.h"\nint main(){return 0;}' > test.cpp
           g++ -std=c++17 -Wall -Wextra -pedantic test.cpp -o /tmp/minimax_smoke
 
 #─────────────────────────────────────────────────────────────
-# JOB 2: AVR build — compile every Arduino example for UNO and
-#        fail if flash/RAM exceed the chip limits
+# 2) AVR build & size report: compile all sketches for Uno
 #─────────────────────────────────────────────────────────────
   arduino-avr:
     runs-on: ubuntu-latest
-
     steps:
-      - name: 🛎️ Checkout repository
+      - name: 🛎️ Checkout
         uses: actions/checkout@v4
 
-      - name: ⚙️ Set up arduino-cli
-        uses: arduino/setup-arduino-cli@v1
-        with:
-          version: latest
-
-      - name: 📦 Install AVR core
-        run: |
-          arduino-cli core update-index
-          arduino-cli core install arduino:avr
-
       - name: 🔨 Compile all examples for Arduino Uno
-        run: |
-          find examples -name "*.ino" | while read sketch; do
-            echo "=== Building $sketch ==="
-            arduino-cli compile --fqbn arduino:avr:uno "$sketch"
-          done
-
-      - name: 📊 Report firmware sizes
-        uses: kenji-miyake/arduino-size-report-action@v2
+        uses: arduino/compile-sketches@v1
         with:
-          sketch: examples/ConnectFour/ConnectFour.ino   # pick any representative sketch
           fqbn: arduino:avr:uno
-          thresholds: |
-            flash: 30720   # Uno flash limit
-            ram:   2048    # Uno SRAM limit
+          sketch-paths: |
+            examples
+          enable-deltas-report: true   # produce size-delta artifact
+
+      # Comment size deltas on PRs (skip on push)
+      - name: 📊 Report size deltas
+        if: github.event_name == 'pull_request'
+        uses: arduino/report-size-deltas@v1
 
