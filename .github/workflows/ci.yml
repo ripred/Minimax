@@ -1,0 +1,45 @@
+name: build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  linux-desktop:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install g++
+        run: sudo apt-get update && sudo apt-get install -y g++ make
+
+      - name: Build desktop example (Connect-Four)
+        working-directory: examples/ConnectFour/desktop
+        run: |
+          g++ -std=c++17 -Wall -Wextra -O2 -I../../.. \
+              connect_four.cpp -o connect_four
+          ./connect_four --benchmark  # optional quick self-test
+
+  arduino-avr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up arduino-cli
+        uses: arduino/setup-arduino-cli@v1
+        with:
+          version: latest
+
+      - name: Install AVR core & Minimax examples
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install arduino:avr
+          # Compile each example for an Uno
+          find examples -name "*.ino" | while read sketch; do
+            arduino-cli compile --fqbn arduino:avr:uno "$sketch"
+          done
+
