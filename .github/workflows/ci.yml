@@ -29,3 +29,24 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: arduino/report-size-deltas@v1
 
+#─────────────────────────────────────────────────────────────
+# Host build (desktop compatibility)
+#─────────────────────────────────────────────────────────────
+  host-build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎
+        uses: actions/checkout@v4
+
+      - name: 🔨 Compile Minimax.h with g++
+        run: |
+          mkdir -p build
+          cat <<'EOF' > build/Arduino.h
+          #pragma once
+          #include <cstdint>
+          #define min(a,b) ((a)<(b)?(a):(b))
+          #define max(a,b) ((a)>(b)?(a):(b))
+          EOF
+          g++ -std=c++17 -c src/Minimax.h -I build -o build/Minimax.o
+
