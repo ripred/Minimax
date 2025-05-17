@@ -21,7 +21,7 @@
 #define   WHITE     2  // AI player
 
 // Board dimensions
-#define   BOARD_SIZE     8        // Define the Gomoku board grid size
+#define   BOARD_SIZE     15       // Define the Gomoku board grid size (15x15 board)
 #define   WIN_LENGTH     5        // 5 in a row to win
 
 // Game configuration
