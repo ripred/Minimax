@@ -5,6 +5,12 @@
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![CI](https://img.shields.io/github/actions/workflow/status/ripred/Minimax/ci.yml?label=build)
 
+[![Arduino-lint](https://github.com/ripred/Minimax/actions/workflows/arduino-lint.yml/badge.svg)](https://github.com/ripred/Minimax/actions/workflows/arduino-lint.yml)
+[![Arduino Library Manager](https://www.ardu-badge.com/badge/Minimax.svg)](https://www.ardu-badge.com/Minimax)
+[![GitHub release](https://flat.badgen.net/github/release/ripred/Minimax)](https://github.com/ripred/Minimax/releases/latest)
+[![Stars](https://flat.badgen.net/github/stars/ripred/Minimax)](https://github.com/ripred/Minimax/stargazers)
+[![Forks](https://flat.badgen.net/github/forks/ripred/Minimax)](https://github.com/ripred/Minimax/network/members)
+
 A **single-header, STL-free** implementation of classic **Minimax search with α–β pruning**, crafted for 2 KB microcontrollers yet flexible enough for desktop use.
 
 * **Tiny footprint** – ≈ 5 KB flash  
