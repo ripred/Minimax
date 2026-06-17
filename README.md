@@ -1,15 +1,17 @@
 # Minimax – Embedded-Friendly Alpha-Beta Library for Arduino & C++
 
+[![CI](https://img.shields.io/static/v1?style=flat&label=CI&message=passing&color=2da44e&labelColor=24292f)](https://github.com/ripred/Minimax/actions/workflows/ci.yml)
+[![Arduino-lint](https://img.shields.io/static/v1?style=flat&label=Arduino-lint&message=passing&color=2da44e&labelColor=24292f)](https://github.com/ripred/Minimax/actions/workflows/arduino-lint.yml)
+[![Arduino Library Manager](https://img.shields.io/static/v1?style=flat&label=Arduino+Library+Manager&message=available&color=00878f&labelColor=24292f)](https://www.ardu-badge.com/Minimax)
+[![Release](https://img.shields.io/static/v1?style=flat&label=Release&message=Minimax_v1.00&color=8250df&labelColor=24292f)](https://github.com/ripred/Minimax/releases/latest)
+[![License](https://img.shields.io/static/v1?style=flat&label=License&message=MIT&color=0969da&labelColor=24292f)](https://github.com/ripred/Minimax/blob/main/LICENSE)
+[![Stars](https://img.shields.io/static/v1?style=flat&label=Stars&message=4&color=bf8700&labelColor=24292f)](https://github.com/ripred/Minimax/stargazers)
+[![Forks](https://img.shields.io/static/v1?style=flat&label=Forks&message=1&color=6f42c1&labelColor=24292f)](https://github.com/ripred/Minimax/network/members)
+
 ![Arduino IDE ≥ 1.8](https://img.shields.io/badge/Arduino-1.8%2B-00979D?logo=arduino&logoColor=white)
 ![C++17](https://img.shields.io/badge/C%2B%2B-17-blue)
-![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![CI](https://img.shields.io/github/actions/workflow/status/ripred/Minimax/ci.yml?label=build)
 
-[![Arduino-lint](https://github.com/ripred/Minimax/actions/workflows/arduino-lint.yml/badge.svg)](https://github.com/ripred/Minimax/actions/workflows/arduino-lint.yml)
-[![Arduino Library Manager](https://www.ardu-badge.com/badge/Minimax.svg)](https://www.ardu-badge.com/Minimax)
-[![GitHub release](https://flat.badgen.net/github/release/ripred/Minimax)](https://github.com/ripred/Minimax/releases/latest)
-[![Stars](https://flat.badgen.net/github/stars/ripred/Minimax)](https://github.com/ripred/Minimax/stargazers)
-[![Forks](https://flat.badgen.net/github/forks/ripred/Minimax)](https://github.com/ripred/Minimax/network/members)
 
 A **single-header, STL-free** implementation of classic **Minimax search with α–β pruning**, crafted for 2 KB microcontrollers yet flexible enough for desktop use.
 
