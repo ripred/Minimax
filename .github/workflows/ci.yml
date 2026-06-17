@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: 🛎️ Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🔨 Compile all examples for Arduino Uno
         uses: arduino/compile-sketches@v1
@@ -40,7 +40,7 @@ jobs:
 
     steps:
       - name: 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: 🔨 Compile Minimax.h with g++
         run: |
